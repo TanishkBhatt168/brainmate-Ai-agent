@@ -1,0 +1,52 @@
+{
+    "version": "02.0.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Step 1: Understand Data (EDA)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/01_understand_data.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Step 2: Clean Data & Sample",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/02_clean_data.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Step 3: Train & Evaluate Models",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/03_train_evaluate.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Step 4: Test Paper Prediction",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/03_train_evaluate.py",
+            "args": [
+                "--predict",
+                "--title",
+                "Attention Is All You Need",
+                "--summary",
+                "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks. We propose a simple network architecture, the Transformer, based solely on attention mechanisms."
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

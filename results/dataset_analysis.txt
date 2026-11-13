@@ -1,0 +1,149 @@
+==============================================================================
+BRAINMATE — DATASET UNDERSTANDING & EXPLORATORY ANALYSIS REPORT
+==============================================================================
+
+1. EXECUTIVE SUMMARY & KEY FINDINGS
+------------------------------------------------------------------------------
+• Dataset Filename:          arXiv_scientific_dataset.csv
+• Total Data Records (Rows): 287,421 tabular records
+• Physical File Lines:       2,316,189 lines on disk
+  -> CRITICAL DISTINCTION: Physical file lines are ~8x higher than tabular records
+     because paper abstracts (summaries) contain multi-line quoted paragraphs.
+     Standard line counting utilities count newlines inside quotes, whereas CSV
+     parsers correctly group each paper as a single tabular row.
+• Unique Paper IDs:          287,421
+• Duplicate Paper IDs:       0
+• Exact Duplicate (Title, Summary) Pairs: 38
+• Unique Category Codes:     147
+• Unique Category Names:     146
+
+2. DATASET SCHEMA & DATA TYPES
+------------------------------------------------------------------------------
+  - id                     : str       
+  - title                  : str       
+  - category               : str       
+  - category_code          : str       
+  - published_date         : str       
+  - updated_date           : str       
+  - authors                : str       
+  - first_author           : str       
+  - summary                : str       
+  - summary_word_count     : int64     
+
+3. SAMPLE RECORDS (FIRST 3 PREVIEWS)
+------------------------------------------------------------------------------
+[Record 1]
+  ID:            cs-9308101v1
+  Title:         Dynamic Backtracking
+  Category:      Artificial Intelligence (cs.AI)
+  Published:     8/1/93
+  Authors:       'M. L. Ginsberg'
+  Summary Preview: Because of their occasional need to return to shallow points in a search
+tree, existing backtracking methods can sometim...
+  Word Count:    79
+
+[Record 2]
+  ID:            cs-9308102v1
+  Title:         A Market-Oriented Programming Environment and its Application to
+  Distributed Multicommodity Flow Problems
+  Category:      Artificial Intelligence (cs.AI)
+  Published:     8/1/93
+  Authors:       'M. P. Wellman'
+  Summary Preview: Market price systems constitute a well-understood class of mechanisms that
+under certain conditions provide effective de...
+  Word Count:    119
+
+[Record 3]
+  ID:            cs-9309101v1
+  Title:         An Empirical Analysis of Search in GSAT
+  Category:      Artificial Intelligence (cs.AI)
+  Published:     9/1/93
+  Authors:       'I. P. Gent'
+  Summary Preview: We describe an extensive study of search in GSAT, an approximation procedure
+for propositional satisfiability. GSAT perf...
+  Word Count:    167
+
+4. MISSING VALUE AUDIT
+------------------------------------------------------------------------------
+  - id                     :       0 missing (0.00%)
+  - title                  :       0 missing (0.00%)
+  - category               :       0 missing (0.00%)
+  - category_code          :       0 missing (0.00%)
+  - published_date         :       0 missing (0.00%)
+  - updated_date           :       0 missing (0.00%)
+  - authors                :       0 missing (0.00%)
+  - first_author           :       0 missing (0.00%)
+  - summary                :       0 missing (0.00%)
+  - summary_word_count     :       0 missing (0.00%)
+
+  -> Finding: The dataset is remarkably complete with 0 NaN values across all columns.
+     However, text validation is still required for whitespace-only strings and retracted papers.
+
+5. CATEGORY DISTRIBUTION & CLASS IMBALANCE
+------------------------------------------------------------------------------
+Top 15 Most Frequent Subject Categories:
+   1. cs.LG           (Machine Learning              ) :  80,452 (27.99%)
+   2. cs.CV           (Computer Vision and Pattern Recognition) :  71,106 (24.74%)
+   3. cs.CL           (Computation and Language (Natural Language Processing)) :  37,251 (12.96%)
+   4. cs.AI           (Artificial Intelligence       ) :  28,726 ( 9.99%)
+   5. stat.ML         (Machine Learning (Statistics) ) :  13,892 ( 4.83%)
+   6. cs.NE           (Neural and Evolutionary Computing) :   6,715 ( 2.34%)
+   7. cs.RO           (Robotics                      ) :   5,254 ( 1.83%)
+   8. cs.CR           (Cryptography and Security     ) :   4,376 ( 1.52%)
+   9. eess.IV         (Image and Video Processing    ) :   2,771 ( 0.96%)
+  10. cs.IR           (Information Retrieval         ) :   2,712 ( 0.94%)
+  11. cs.SE           (Software Engineering          ) :   2,575 ( 0.90%)
+  12. cs.CY           (Computers and Society         ) :   2,293 ( 0.80%)
+  13. cs.HC           (Human-Computer Interaction    ) :   2,184 ( 0.76%)
+  14. cs.SD           (Sound                         ) :   1,733 ( 0.60%)
+  15. stat.ME         (Methodology (Statistics)      ) :   1,616 ( 0.56%)
+
+Bottom 10 Rarest Subject Categories:
+   1. cond-mat.other  (cond-mat.other                ) :       1 papers
+   2. physics.class-ph (Classical Physics             ) :       1 papers
+   3. math.CV         (Complex Variables             ) :       1 papers
+   4. math.GM         (General Mathematics           ) :       1 papers
+   5. nucl-ex         (Nuclear Experiment            ) :       1 papers
+   6. math.GN         (math.GN                       ) :       2 papers
+   7. physics.pop-ph  (physics.pop-ph                ) :       2 papers
+   8. physics.atom-ph (physics.atom-ph               ) :       2 papers
+   9. q-fin.EC        (Economics (Quantitative Finance)) :       2 papers
+  10. astro-ph        (Astrophysics                  ) :       3 papers
+
+  -> Class Imbalance Insight:
+     The top 5 categories (cs.LG, cs.CV, cs.CL, cs.AI, stat.ML) account for ~80% of all papers.
+     Meanwhile, 5 categories have only 1 paper, and 26 categories have fewer than 10 papers.
+     Therefore, stratified sampling and evaluation metrics like Macro F1-score are critical
+     to avoid misleadingly optimistic overall accuracy.
+
+6. TARGET SCOPE AUDIT: 6 CORE AI & COMPUTER SCIENCE DOMAINS
+------------------------------------------------------------------------------
+• Total Papers in 6 Focus Domains: 227,165 (79.04% of entire dataset)
+  1. cs.LG      (Machine Learning                                ) :  80,452 papers (27.99%)
+  2. cs.CV      (Computer Vision and Pattern Recognition         ) :  71,106 papers (24.74%)
+  3. cs.CL      (Computation and Language (Natural Language Processing)) :  37,251 papers (12.96%)
+  4. cs.AI      (Artificial Intelligence                         ) :  28,726 papers ( 9.99%)
+  5. cs.RO      (Robotics                                        ) :   5,254 papers ( 1.83%)
+  6. cs.CR      (Cryptography and Security                       ) :   4,376 papers ( 1.52%)
+
+7. TEXT LENGTH STATISTICS
+------------------------------------------------------------------------------
+Paper Titles:
+  - Minimum length: 5 characters
+  - Maximum length: 245 characters
+  - Average length: 78.5 characters
+
+Paper Summaries (Abstracts):
+  - Minimum length: 3 characters
+  - Maximum length: 3658 characters
+  - Average length: 1242.5 characters
+  - Average words:  171.0 words
+
+  -> Text Finding:
+     The shortest summaries (< 50 characters) represent retracted or withdrawn papers
+     (e.g., 'This paper has been withdrawn', '#NAME?'). These non-informative rows
+     must be filtered out during the cleaning phase.
+
+==============================================================================
+END OF ANALYSIS REPORT
+==============================================================================

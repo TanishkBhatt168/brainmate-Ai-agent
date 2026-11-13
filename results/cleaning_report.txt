@@ -1,0 +1,67 @@
+==============================================================================
+BRAINMATE — DATA CLEANING & PREPROCESSING AUDIT REPORT
+==============================================================================
+
+1. CLEANING SUMMARY & RECORD AUDIT
+------------------------------------------------------------------------------
+• Total Records Inspected:          287,421
+• Total Records Removed:            60,297
+• Total Valid Records Retained:     227,124 (79.02%)
+• Unique Categories in Clean Data:  6
+
+2. BREAKDOWN OF REMOVED RECORDS
+------------------------------------------------------------------------------
+  1. Missing / Empty Titles:                       0
+  2. Missing / Empty Summaries:                    0
+  3. Missing / Invalid Category Codes:             0
+  4. Withdrawn / Retracted Placeholder Texts:     15
+  5. Empty Combined Texts:                         0
+  6. Exact Duplicate (Title + Summary) Pairs:     26
+  7. Filtered (Outside 6 Target Categories):  60,256
+  --------------------------------------------------
+  Total Removed:                              60,297
+
+3. DUPLICATE ID & VERSIONING DECISION
+------------------------------------------------------------------------------
+• Finding on arXiv IDs:
+  Every record in the raw dataset possesses a unique 'id' string (e.g., cs-9308101v1,
+  cs-9308101v2). However, some papers share a base identifier representing different
+  versions (v1, v2) submitted to arXiv over time, or cross-listed categories.
+
+• Methodological Decision:
+  We do NOT discard papers merely because their IDs share a base identifier or version
+  tag. If authors revised an abstract or submitted distinct versions, they remain valid
+  scientific publications. However, if the exact normalized (Title, Summary) text is
+  identical, only the first occurrence is kept, removing duplicate redundancy (38 records).
+
+4. WHITESPACE NORMALIZATION
+------------------------------------------------------------------------------
+• Text Normalization Applied:
+  - Stripped leading and trailing whitespace from titles and summaries.
+  - Collapsed internal newline characters (\n), carriage returns (\r), and tabs (\t)
+    into single clean spaces.
+  - Replaced multiple consecutive whitespace characters with a single space.
+  -> Important: No scientific terminology, domain abbreviations, or vocabulary words
+     were removed. Only formatting artifacts were normalized.
+
+5. DATASET SAMPLING & MEMORY MANAGEMENT
+------------------------------------------------------------------------------
+• Sampling Strategy:               Balanced Multi-Class Random Sample
+• Configured Target Sample Size:   20,000 records
+• Actual Sample Records Selected:  20,000 records
+• Number of Categories in Sample:  6
+• Papers per Category:             {'cs.CV': 3334, 'cs.CL': 3334, 'cs.AI': 3333, 'cs.LG': 3333, 'cs.RO': 3333, 'cs.CR': 3333}
+• Fixed Random Seed:               42 (guarantees identical reproducibility)
+
+6. DISK SPACE CONSIDERATIONS
+------------------------------------------------------------------------------
+• Disk-Space Analysis:
+  - Original Dataset on disk: ~410 MB (287,421 rows).
+  - Saving a representative balanced sample of 20,000 clean papers requires only ~28 MB,
+    saving over 93% disk space and allowing fast, memory-safe experimentation on 16 GB RAM.
+  - Both behaviors are configurable via '--sample-size', '--save-full', and '--no-save'.
+• Saved Cleaned File: arXiv_cleaned_sample_20k.csv
+
+==============================================================================
+END OF CLEANING REPORT
+==============================================================================

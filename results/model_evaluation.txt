@@ -1,0 +1,83 @@
+========================================================================================
+BRAINMATE — MACHINE LEARNING MODEL EVALUATION REPORT
+========================================================================================
+
+1. EXPERIMENTAL CONFIGURATION & DATASET SPLIT
+----------------------------------------------------------------------------------------
+• Total Records Evaluated:       20,000
+• Training Set Size (80%):       16,000 papers
+• Test Set Size (20% Held-Out):  4,000 papers
+• Number of Target Classes:      6 arXiv categories
+• Split Strategy:                Stratified random split (preserves class ratios)
+• Fixed Random Seed:             42 (guarantees exact reproducibility)
+• Input Text Features:           Paper Title + Summary (combined into single string)
+• Target Label:                  category_code (e.g. cs.LG, cs.CV, cs.AI)
+• Target Leakage Prevention:     Strictly excluded category names and codes from inputs
+
+2. FEATURE EXTRACTION (TF-IDF PARAMETERS)
+----------------------------------------------------------------------------------------
+• Vectorizer:                    Scikit-learn TfidfVectorizer
+• Vocabulary Size (max_features): 25,000 features
+• N-gram Range:                  (1, 2) unigrams and bigrams
+• Stop Words:                    'english' removed
+• Sublinear TF:                  True (1 + log(tf) applied to dampen term burstiness)
+• Leakage Rule:                  TF-IDF was fitted on TRAINING data ONLY, never on test
+
+3. 4 ML MODELS COMPARISON SUMMARY
+------------------------------------------------------------------------------------------------
+Model Name                       | Accuracy   | Precision  | Recall    | F1-Score  | Train Time
+------------------------------------------------------------------------------------------------
+Multinomial Naive Bayes          |   81.38%   |    0.8138  |   0.8138  |   0.8136  |    14.03s
+Linear Support Vector Machine    |   81.95%   |    0.8179  |   0.8195  |   0.8186  |    14.94s
+Logistic Regression              |   82.47%   |    0.8249  |   0.8248  |   0.8248  |    19.30s
+Random Forest Classifier         |   78.12%   |    0.7777  |   0.7813  |   0.7750  |    15.57s
+------------------------------------------------------------------------------------------------
+
+4. MODEL SELECTION JUSTIFICATION
+----------------------------------------------------------------------------------------
+• Selected Best Model:           Logistic Regression
+• Measured Accuracy:             82.47%
+• Measured Macro F1-score:       0.8248
+• Measured Weighted F1-score:    0.8247
+• Training Time:                 19.30 seconds
+
+• Selection Rationale:
+  1. Top Generalization: 'Logistic Regression' achieved the highest Accuracy (82.47%) and the highest Macro F1-score (0.8248) on the held-out test set.
+  2. Balanced Multi-Class Precision: Maintained high F1 across all 6 target categories (Weighted F1: 0.8247).
+  3. Training & Inference Speed: Trained in 19.30 seconds with fast inference latency.
+
+5. BEGINNER-FRIENDLY METRIC EXPLANATIONS
+----------------------------------------------------------------------------------------
+• Accuracy:
+  The percentage of test papers whose categories were correctly predicted out of all test papers.
+• Precision (Macro):
+  Of all papers the model predicted as category X, what fraction actually belonged to X? Averaged
+  equally across all categories.
+• Recall (Macro):
+  Of all papers that truly belonged to category X, what fraction did the model successfully find?
+  Averaged equally across all categories.
+• Macro F1-Score:
+  The harmonic mean of Precision and Recall calculated per class, then averaged across all classes.
+  Crucial for imbalanced data because it treats rare categories equally with massive ones.
+• Weighted F1-Score:
+  F1-score averaged across classes with weights proportional to each category's test sample size.
+
+6. DETAILED CLASSIFICATION REPORT (BEST MODEL)
+----------------------------------------------------------------------------------------
+              precision    recall  f1-score   support
+
+       cs.AI       0.71      0.71      0.71       667
+       cs.CL       0.83      0.83      0.83       667
+       cs.CR       0.90      0.92      0.91       666
+       cs.CV       0.86      0.85      0.85       667
+       cs.LG       0.74      0.75      0.74       667
+       cs.RO       0.90      0.89      0.90       666
+
+    accuracy                           0.82      4000
+   macro avg       0.82      0.82      0.82      4000
+weighted avg       0.82      0.82      0.82      4000
+
+
+========================================================================================
+END OF EVALUATION REPORT
+========================================================================================

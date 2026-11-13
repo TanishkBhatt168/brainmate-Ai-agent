@@ -1,0 +1,14 @@
+node_modules/
+**/node_modules/
+.next/
+dist/
+build/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+arXiv_scientific_dataset.csv
+arXiv_cleaned_sample_20k.csv
